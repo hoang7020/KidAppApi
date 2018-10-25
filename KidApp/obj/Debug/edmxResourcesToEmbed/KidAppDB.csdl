@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="KidAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="EngResult">
+    <Key>
+      <PropertyRef Name="engId" />
+    </Key>
+    <Property Name="engId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="eng1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="eng2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="eng3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="active" Type="Boolean" />
+    <NavigationProperty Name="Image" Relationship="Self.FK_EngResult_Image" FromRole="EngResult" ToRole="Image" />
+  </EntityType>
+  <EntityType Name="Image">
+    <Key>
+      <PropertyRef Name="imageId" />
+    </Key>
+    <Property Name="imageId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="imageName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="timeShoot" Type="Double" />
+    <Property Name="userId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="active" Type="Boolean" />
+    <NavigationProperty Name="EngResult" Relationship="Self.FK_EngResult_Image" FromRole="Image" ToRole="EngResult" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Image_User" FromRole="Image" ToRole="User" />
+    <NavigationProperty Name="VieResult" Relationship="Self.FK_VieResult_Image" FromRole="Image" ToRole="VieResult" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="dob" Type="DateTime" Precision="0" />
+    <Property Name="address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="active" Type="Boolean" />
+    <NavigationProperty Name="Images" Relationship="Self.FK_Image_User" FromRole="User" ToRole="Image" />
+  </EntityType>
+  <EntityType Name="VieResult">
+    <Key>
+      <PropertyRef Name="vieId" />
+    </Key>
+    <Property Name="vieId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="vie1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="vie2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="vie3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="active" Type="Boolean" />
+    <NavigationProperty Name="Image" Relationship="Self.FK_VieResult_Image" FromRole="VieResult" ToRole="Image" />
+  </EntityType>
+  <Association Name="FK_EngResult_Image">
+    <End Role="Image" Type="Self.Image" Multiplicity="1" />
+    <End Role="EngResult" Type="Self.EngResult" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Image">
+        <PropertyRef Name="imageId" />
+      </Principal>
+      <Dependent Role="EngResult">
+        <PropertyRef Name="engId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Image_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Image" Type="Self.Image" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Image">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VieResult_Image">
+    <End Role="Image" Type="Self.Image" Multiplicity="1" />
+    <End Role="VieResult" Type="Self.VieResult" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Image">
+        <PropertyRef Name="imageId" />
+      </Principal>
+      <Dependent Role="VieResult">
+        <PropertyRef Name="vieId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="KidAppEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="EngResults" EntityType="Self.EngResult" />
+    <EntitySet Name="Images" EntityType="Self.Image" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="VieResults" EntityType="Self.VieResult" />
+    <AssociationSet Name="FK_EngResult_Image" Association="Self.FK_EngResult_Image">
+      <End Role="Image" EntitySet="Images" />
+      <End Role="EngResult" EntitySet="EngResults" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Image_User" Association="Self.FK_Image_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Image" EntitySet="Images" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VieResult_Image" Association="Self.FK_VieResult_Image">
+      <End Role="Image" EntitySet="Images" />
+      <End Role="VieResult" EntitySet="VieResults" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="KidAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="EngResult">
+    <Key>
+      <PropertyRef Name="engId" />
+    </Key>
+    <Property Name="engId" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="eng1" Type="varchar" MaxLength="50" />
+    <Property Name="eng2" Type="varchar" MaxLength="50" />
+    <Property Name="eng3" Type="varchar" MaxLength="50" />
+    <Property Name="active" Type="bit" />
+  </EntityType>
+  <EntityType Name="Image">
+    <Key>
+      <PropertyRef Name="imageId" />
+    </Key>
+    <Property Name="imageId" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="imageName" Type="varchar" MaxLength="50" />
+    <Property Name="timeShoot" Type="float" />
+    <Property Name="userId" Type="varchar" MaxLength="50" />
+    <Property Name="active" Type="bit" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="userName" Type="varchar" MaxLength="50" />
+    <Property Name="password" Type="varchar" MaxLength="50" />
+    <Property Name="dob" Type="date" />
+    <Property Name="address" Type="varchar" MaxLength="100" />
+    <Property Name="active" Type="bit" />
+  </EntityType>
+  <EntityType Name="VieResult">
+    <Key>
+      <PropertyRef Name="vieId" />
+    </Key>
+    <Property Name="vieId" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="vie1" Type="varchar" MaxLength="50" />
+    <Property Name="vie2" Type="varchar" MaxLength="50" />
+    <Property Name="vie3" Type="varchar" MaxLength="50" />
+    <Property Name="active" Type="bit" />
+  </EntityType>
+  <Association Name="FK_EngResult_Image">
+    <End Role="Image" Type="Self.Image" Multiplicity="1" />
+    <End Role="EngResult" Type="Self.EngResult" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Image">
+        <PropertyRef Name="imageId" />
+      </Principal>
+      <Dependent Role="EngResult">
+        <PropertyRef Name="engId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Image_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Image" Type="Self.Image" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="Image">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VieResult_Image">
+    <End Role="Image" Type="Self.Image" Multiplicity="1" />
+    <End Role="VieResult" Type="Self.VieResult" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Image">
+        <PropertyRef Name="imageId" />
+      </Principal>
+      <Dependent Role="VieResult">
+        <PropertyRef Name="vieId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="KidAppModelStoreContainer">
+    <EntitySet Name="EngResult" EntityType="Self.EngResult" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VieResult" EntityType="Self.VieResult" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_EngResult_Image" Association="Self.FK_EngResult_Image">
+      <End Role="Image" EntitySet="Image" />
+      <End Role="EngResult" EntitySet="EngResult" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Image_User" Association="Self.FK_Image_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Image" EntitySet="Image" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VieResult_Image" Association="Self.FK_VieResult_Image">
+      <End Role="Image" EntitySet="Image" />
+      <End Role="VieResult" EntitySet="VieResult" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
