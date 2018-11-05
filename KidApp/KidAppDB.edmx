@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="KidAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="KidAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="EngResult">
           <Key>
             <PropertyRef Name="engId" />
@@ -32,7 +32,7 @@
           <Property Name="userId" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="userName" Type="varchar" MaxLength="50" />
           <Property Name="password" Type="varchar" MaxLength="50" />
-          <Property Name="dob" Type="date" />
+          <Property Name="dateCreated" Type="date" />
           <Property Name="address" Type="varchar" MaxLength="100" />
           <Property Name="active" Type="bit" />
         </EntityType>
@@ -41,9 +41,9 @@
             <PropertyRef Name="vieId" />
           </Key>
           <Property Name="vieId" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="vie1" Type="varchar" MaxLength="50" />
-          <Property Name="vie2" Type="varchar" MaxLength="50" />
-          <Property Name="vie3" Type="varchar" MaxLength="50" />
+          <Property Name="vie1" Type="nvarchar" MaxLength="50" />
+          <Property Name="vie2" Type="nvarchar" MaxLength="50" />
+          <Property Name="vie3" Type="nvarchar" MaxLength="50" />
           <Property Name="active" Type="bit" />
         </EntityType>
         <Association Name="FK_EngResult_Image">
@@ -100,61 +100,78 @@
             <End Role="VieResult" EntitySet="VieResult" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="KidAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="KidAppEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EngResults" EntityType="KidAppModel.EngResult" />
+          <EntitySet Name="Images" EntityType="KidAppModel.Image" />
+          <EntitySet Name="Users" EntityType="KidAppModel.User" />
+          <EntitySet Name="VieResults" EntityType="KidAppModel.VieResult" />
+          <AssociationSet Name="FK_EngResult_Image" Association="KidAppModel.FK_EngResult_Image">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="EngResult" EntitySet="EngResults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Image_User" Association="KidAppModel.FK_Image_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Image" EntitySet="Images" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VieResult_Image" Association="KidAppModel.FK_VieResult_Image">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="VieResult" EntitySet="VieResults" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="EngResult">
           <Key>
             <PropertyRef Name="engId" />
           </Key>
-          <Property Name="engId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="engId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="eng1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="eng2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="eng3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="active" Type="Boolean" />
-          <NavigationProperty Name="Image" Relationship="Self.FK_EngResult_Image" FromRole="EngResult" ToRole="Image" />
+          <NavigationProperty Name="Image" Relationship="KidAppModel.FK_EngResult_Image" FromRole="EngResult" ToRole="Image" />
         </EntityType>
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="imageId" />
           </Key>
-          <Property Name="imageId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="imageId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="imageName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="timeShoot" Type="Double" />
           <Property Name="userId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="active" Type="Boolean" />
-          <NavigationProperty Name="EngResult" Relationship="Self.FK_EngResult_Image" FromRole="Image" ToRole="EngResult" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Image_User" FromRole="Image" ToRole="User" />
-          <NavigationProperty Name="VieResult" Relationship="Self.FK_VieResult_Image" FromRole="Image" ToRole="VieResult" />
+          <NavigationProperty Name="EngResult" Relationship="KidAppModel.FK_EngResult_Image" FromRole="Image" ToRole="EngResult" />
+          <NavigationProperty Name="User" Relationship="KidAppModel.FK_Image_User" FromRole="Image" ToRole="User" />
+          <NavigationProperty Name="VieResult" Relationship="KidAppModel.FK_VieResult_Image" FromRole="Image" ToRole="VieResult" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="userId" />
           </Key>
-          <Property Name="userId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="dob" Type="DateTime" Precision="0" />
+          <Property Name="dateCreated" Type="DateTime" Precision="0" />
           <Property Name="address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="active" Type="Boolean" />
-          <NavigationProperty Name="Images" Relationship="Self.FK_Image_User" FromRole="User" ToRole="Image" />
+          <NavigationProperty Name="Images" Relationship="KidAppModel.FK_Image_User" FromRole="User" ToRole="Image" />
         </EntityType>
         <EntityType Name="VieResult">
           <Key>
             <PropertyRef Name="vieId" />
           </Key>
-          <Property Name="vieId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="vie1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="vie2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="vie3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="vieId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="vie1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="vie2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="vie3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="active" Type="Boolean" />
-          <NavigationProperty Name="Image" Relationship="Self.FK_VieResult_Image" FromRole="VieResult" ToRole="Image" />
+          <NavigationProperty Name="Image" Relationship="KidAppModel.FK_VieResult_Image" FromRole="VieResult" ToRole="Image" />
         </EntityType>
         <Association Name="FK_EngResult_Image">
-          <End Role="Image" Type="Self.Image" Multiplicity="1" />
-          <End Role="EngResult" Type="Self.EngResult" Multiplicity="0..1" />
+          <End Type="KidAppModel.Image" Role="Image" Multiplicity="1" />
+          <End Type="KidAppModel.EngResult" Role="EngResult" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Image">
               <PropertyRef Name="imageId" />
@@ -165,8 +182,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Image_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="Image" Type="Self.Image" Multiplicity="*" />
+          <End Type="KidAppModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="KidAppModel.Image" Role="Image" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="userId" />
@@ -177,8 +194,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_VieResult_Image">
-          <End Role="Image" Type="Self.Image" Multiplicity="1" />
-          <End Role="VieResult" Type="Self.VieResult" Multiplicity="0..1" />
+          <End Type="KidAppModel.Image" Role="Image" Multiplicity="1" />
+          <End Type="KidAppModel.VieResult" Role="VieResult" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Image">
               <PropertyRef Name="imageId" />
@@ -188,24 +205,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="KidAppEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="EngResults" EntityType="Self.EngResult" />
-          <EntitySet Name="Images" EntityType="Self.Image" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <EntitySet Name="VieResults" EntityType="Self.VieResult" />
-          <AssociationSet Name="FK_EngResult_Image" Association="Self.FK_EngResult_Image">
-            <End Role="Image" EntitySet="Images" />
-            <End Role="EngResult" EntitySet="EngResults" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Image_User" Association="Self.FK_Image_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Image" EntitySet="Images" />
-          </AssociationSet>
-          <AssociationSet Name="FK_VieResult_Image" Association="Self.FK_VieResult_Image">
-            <End Role="Image" EntitySet="Images" />
-            <End Role="VieResult" EntitySet="VieResults" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -215,45 +214,45 @@
           <EntitySetMapping Name="EngResults">
             <EntityTypeMapping TypeName="KidAppModel.EngResult">
               <MappingFragment StoreEntitySet="EngResult">
-                <ScalarProperty Name="engId" ColumnName="engId" />
-                <ScalarProperty Name="eng1" ColumnName="eng1" />
-                <ScalarProperty Name="eng2" ColumnName="eng2" />
-                <ScalarProperty Name="eng3" ColumnName="eng3" />
                 <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="eng3" ColumnName="eng3" />
+                <ScalarProperty Name="eng2" ColumnName="eng2" />
+                <ScalarProperty Name="eng1" ColumnName="eng1" />
+                <ScalarProperty Name="engId" ColumnName="engId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Images">
             <EntityTypeMapping TypeName="KidAppModel.Image">
               <MappingFragment StoreEntitySet="Image">
-                <ScalarProperty Name="imageId" ColumnName="imageId" />
-                <ScalarProperty Name="imageName" ColumnName="imageName" />
-                <ScalarProperty Name="timeShoot" ColumnName="timeShoot" />
-                <ScalarProperty Name="userId" ColumnName="userId" />
                 <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="timeShoot" ColumnName="timeShoot" />
+                <ScalarProperty Name="imageName" ColumnName="imageName" />
+                <ScalarProperty Name="imageId" ColumnName="imageId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="KidAppModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="userId" ColumnName="userId" />
-                <ScalarProperty Name="userName" ColumnName="userName" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="dob" ColumnName="dob" />
-                <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VieResults">
             <EntityTypeMapping TypeName="KidAppModel.VieResult">
               <MappingFragment StoreEntitySet="VieResult">
-                <ScalarProperty Name="vieId" ColumnName="vieId" />
-                <ScalarProperty Name="vie1" ColumnName="vie1" />
-                <ScalarProperty Name="vie2" ColumnName="vie2" />
-                <ScalarProperty Name="vie3" ColumnName="vie3" />
                 <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="vie3" ColumnName="vie3" />
+                <ScalarProperty Name="vie2" ColumnName="vie2" />
+                <ScalarProperty Name="vie1" ColumnName="vie1" />
+                <ScalarProperty Name="vieId" ColumnName="vieId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

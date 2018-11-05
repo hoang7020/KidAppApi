@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="KidAppModelStoreContainer" CdmEntityContainer="KidAppEntities">
+    <EntitySetMapping Name="EngResults">
+      <EntityTypeMapping TypeName="KidAppModel.EngResult">
+        <MappingFragment StoreEntitySet="EngResult">
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="eng3" ColumnName="eng3" />
+          <ScalarProperty Name="eng2" ColumnName="eng2" />
+          <ScalarProperty Name="eng1" ColumnName="eng1" />
+          <ScalarProperty Name="engId" ColumnName="engId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Images">
+      <EntityTypeMapping TypeName="KidAppModel.Image">
+        <MappingFragment StoreEntitySet="Image">
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="timeShoot" ColumnName="timeShoot" />
+          <ScalarProperty Name="imageName" ColumnName="imageName" />
+          <ScalarProperty Name="imageId" ColumnName="imageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="KidAppModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VieResults">
+      <EntityTypeMapping TypeName="KidAppModel.VieResult">
+        <MappingFragment StoreEntitySet="VieResult">
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="vie3" ColumnName="vie3" />
+          <ScalarProperty Name="vie2" ColumnName="vie2" />
+          <ScalarProperty Name="vie1" ColumnName="vie1" />
+          <ScalarProperty Name="vieId" ColumnName="vieId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
